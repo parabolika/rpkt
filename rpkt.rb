@@ -1,14 +1,16 @@
 module SimplePackets
   module PacketDefinition
-    def self.packet(id, &block)
-      @packet_defs ||= []
-      @packet_defs[id] = block
-    end
+    class << self
+      def packet(id, &block)
+	@packet_defs ||= []
+	@packet_defs[id] = block
+      end
 
-    def self.do(id, data)
-      data = DataContainer.new(data)
-      data.instance_eval &@packet_defs[id]
-      data.packet
+      def do(id, data)
+	data = DataContainer.new(data)
+	data.instance_eval &@packet_defs[id]
+	data.packet
+      end
     end
   end
 
