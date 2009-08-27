@@ -7,7 +7,7 @@ module SimplePackets
 
     def self.do(id, data)
       data = DataContainer.new(data)
-      @packet_defs[id].call data
+      data.instance_eval &@packet_defs[id]
       data.packet
     end
   end
@@ -51,14 +51,14 @@ end
 
 # Too long, make #packet a top-level method
 # Also, remove data as a param, call top-level #u1
-SimplePackets::PacketDefinition.packet 37 do |data|
-  data.u1 :some_info
-  data.u1 :other_info
+SimplePackets::PacketDefinition.packet 37 do
+  u1 :some_info
+  u1 :other_info
 end
 
 # Possible to use brackets for more C-style structs as well:
 # packet 37 { |data|
-#   data.u1 ...
+#   u1 ...
 # }
 
 data = [1, 4, 2, 6, 8, 2, 5, 5]
