@@ -1,12 +1,4 @@
 module SimplePackets
-  class Packet
-    def method_missing(symbol, *args)
-      if instance_variable_defined?('@' + symbol)
-	instance_variable_get('@' + symbol)
-      end
-    end
-  end
-
   module PacketDefinition
     def self.packet(id, &block)
       @packet_defs ||= []
@@ -17,6 +9,14 @@ module SimplePackets
       data = DataContainer.new(data)
       @packet_defs[id].call data
       data.packet
+    end
+  end
+
+  class Packet
+    def method_missing(symbol, *args)
+      if instance_variable_defined?('@' + symbol)
+	instance_variable_get('@' + symbol)
+      end
     end
   end
 
