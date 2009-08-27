@@ -1,19 +1,4 @@
 module SimplePackets
-  module PacketDefinition
-    class << self
-      def packet(id, &block)
-	@packet_defs ||= []
-	@packet_defs[id] = block
-      end
-
-      def do(id, data)
-	data = DataContainer.new(data)
-	data.instance_eval &@packet_defs[id]
-	data.packet
-      end
-    end
-  end
-
   class Packet
     def method_missing(symbol, *args)
       if instance_variable_defined?('@' + symbol)
@@ -49,4 +34,15 @@ module SimplePackets
 	@packet.instance_variable_set('@' + name, value)
       end
   end
+end
+
+def define_packet(id, &block)
+  @packet_defs ||= []
+  @packet_defs[id] = block
+end
+
+def process_packet(id, data)
+  data = SimplePackets::DataContainer.new(data)
+  data.instance_eval &@packet_defs[id]
+  data.packet
 end
