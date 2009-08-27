@@ -3,6 +3,8 @@ module SimplePackets
     def method_missing(symbol, *args)
       if instance_variable_defined?('@' + symbol)
 	instance_variable_get('@' + symbol)
+      else
+	super
       end
     end
   end
