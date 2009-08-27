@@ -52,7 +52,6 @@ module SimplePackets
 end
 
 # Too long, make #packet a top-level method
-# Also, remove data as a param, call top-level #u1
 SimplePackets::PacketDefinition.packet 37 do
   u1 :some_info
   u1 :other_info
