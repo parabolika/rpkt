@@ -1,11 +1,12 @@
 module SimplePackets
   class Packet
-    def method_missing(symbol, *args)
-      if instance_variable_defined?('@' + symbol)
-        instance_variable_get('@' + symbol)
-      else
-        super
-      end
+    def set_var(symbol, value)
+      instance_variable_set('@' + symbol, value)
+      instance_eval <<-END
+        def #{symbol}
+          @#{symbol}
+        end
+      END
     end
   end
 
@@ -33,7 +34,7 @@ module SimplePackets
       end
 
       def add_value(name, value)
-        @packet.instance_variable_set('@' + name, value)
+        @packet.set_var(name, value)
       end
   end
 end
