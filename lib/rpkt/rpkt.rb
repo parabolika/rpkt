@@ -44,7 +44,7 @@ module SimplePackets
 end
 
 def define_packet(id, &block)
-  @packet_defs ||= []
+  @packet_defs ||= {}
   @packet_defs[id] = block
 end
 
