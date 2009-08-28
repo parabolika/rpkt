@@ -1,5 +1,5 @@
 module SimplePackets
-  class Packet
+  module DynamicVariables
     def set_var(symbol, value)
       instance_variable_set('@' + symbol, value)
       instance_eval <<-END
@@ -8,6 +8,10 @@ module SimplePackets
         end
       END
     end
+  end
+
+  class Packet
+    include DynamicVariables
   end
 
   class DataContainer
